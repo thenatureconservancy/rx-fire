@@ -1,23 +1,39 @@
 <template>
   <div id="panel">
-    <div>
-      <q-btn
-        icon="close"
-        round
-        flat
-        color="red"
-        @click="ms.rightPanelVis = !ms.rightPanelVis"
-      >
-        <q-tooltip
-          class="bg-white text-primary text-h7 shadow-4"
-          style="border: 1pt solid #ccc"
-          anchor="center right"
-          self="center start"
-          >Close</q-tooltip
+    <q-scroll-area style="height: 100%; max-width: 300px">
+      <div>
+        <q-btn
+          icon="close"
+          square
+          dense
+          flat
+          color="red"
+          class="q-mx-sm"
+          @click="ms.rightPanelVis = !ms.rightPanelVis"
         >
-      </q-btn>
-    </div>
-    <div class="text-center">Custom Side Panel Content</div>
+          <q-tooltip
+            class="bg-white text-primary text-h7 shadow-4"
+            style="border: 1pt solid #ccc"
+            anchor="center right"
+            self="center start"
+            >Close</q-tooltip
+          >
+        </q-btn>
+      </div>
+      <div class="text-center">Management Goals Summary</div>
+      <div>
+        <q-btn
+          class="q-ml-sm"
+          spread
+          color="primary"
+          label="Save Summary"
+          icon="file_download"
+          square
+          unelevated
+          style="position: absolute; bottom: 10px; width: 100%"
+        />
+      </div>
+    </q-scroll-area>
   </div>
 </template>
 
@@ -30,13 +46,12 @@ const ms = useMapStore();
 <style scoped>
 #panel {
   width: 300px;
-  height: calc(100vh - 50px);
+  height: 100%;
   background-color: white;
-  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
+  /* box-shadow: -2px 0 8px rgba(0, 0, 0, 0.2); */
   overflow-y: auto;
-  position: absolute;
-  right: 0px;
+  display: flex;
+  flex-direction: column;
 }
 
 .panel-header {

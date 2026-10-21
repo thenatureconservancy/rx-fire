@@ -1,0 +1,7 @@
+# Services directory
+#
+# This directory will contain business logic and data access layers.
+# Examples:
+# - arcgisService.ts - ArcGIS Online integration
+# - rAnalyticsService.ts - R analytics service integration
+# - jobService.ts - Job processing logic

@@ -1,15 +1,15 @@
-import 'quasar/dist/quasar.css'
-import '@quasar/extras/roboto-font/roboto-font.css'
-import '@quasar/extras/material-icons/material-icons.css'
-import '@quasar/extras/material-icons-outlined/material-icons-outlined.css'
-import '@quasar/extras/fontawesome-v5/fontawesome-v5.css'
+import 'quasar/dist/quasar.css';
+import '@quasar/extras/roboto-font/roboto-font.css';
+import '@quasar/extras/material-icons/material-icons.css';
+import '@quasar/extras/material-icons-outlined/material-icons-outlined.css';
+import '@quasar/extras/fontawesome-v5/fontawesome-v5.css';
 
 // To be used on app.use(Quasar, { ... })
 export default {
   config: {
     animations: 'all',
     brand: {
-      primary: '#00703c',
+      primary: '#386A58',
       secondary: '#49a942',
       accent: '#009688',
       dark: '#1a1a1a',
@@ -21,7 +21,7 @@ export default {
       customColor: '#338D63',
       iris: '#9b89b4',
       leafGreen: '#70b65f',
-      yellowField: '#FFE14F'
+      yellowField: '#FFE14F',
     },
     blues: {},
     greens: {},
@@ -34,7 +34,7 @@ export default {
       plum: '#90214a',
       crimson: '#c5351c',
       redRock: '#f3901d',
-      yellowField: '#ffe14f'
+      yellowField: '#ffe14f',
     },
     tncSupplemental: {
       mallard: '#007932',
@@ -58,7 +58,7 @@ export default {
       ochre: '#a88701',
       nutmeg: '#b48724',
       butternut: '#e39717',
-      gold: '#e6b120'
+      gold: '#e6b120',
     },
     tncNeutrals: {
       cocoa: '#623c25',
@@ -69,9 +69,9 @@ export default {
       icicle: '#e4e6d7',
       mudstone: '#989482',
       sandstone: '#f7e7c9',
-      drySage: '#afb087'
-    }
+      drySage: '#afb087',
+    },
   },
   plugins: {},
-  extras: ['material-symbols-outlined']
-}
+  extras: ['material-symbols-outlined'],
+};

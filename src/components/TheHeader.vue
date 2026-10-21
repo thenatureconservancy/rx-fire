@@ -1,11 +1,11 @@
 <template>
   <q-toolbar elevated class="bg-primary text-white">
     <q-toolbar-title style="font-weight: 600">
-      <span class="q-mx-sm"
+      <!-- <span class="q-mx-sm"
         ><q-img src="/tnc_logo_white.png" width="150px"
-      /></span>
-      <span class="q-mx-sm">Project Title</span>
-      <span class="text-weight-light">Subtitle</span>
+      /></span> -->
+      <span class="q-mx-sm">Rx Fire</span>
+      <span class="text-weight-light">Decision Support Tool</span>
     </q-toolbar-title>
     <q-btn color="primary" dense unelevated icon="menu">
       <q-menu>

@@ -1,37 +1,46 @@
 <template>
-  <TheHeader></TheHeader>
-  <q-splitter
-    v-model="ms.splitterModel"
-    :style="
-      !smallScreen
-        ? 'height: calc(100vh - 50px)'
-        : 'height: calc(100vh - 50px); width: 100%; position: absolute'
-    "
-    :disable="smallScreen"
-    :horizontal="smallScreen"
-  >
-    <template v-slot:before>
-      <div class="q-ma-lg" v-if="!smallScreen">
-        <TheLeftPanel></TheLeftPanel>
-      </div>
-      <div v-else>
-        <TheMap></TheMap>
-      </div>
-    </template>
-    <template v-slot:after>
-      <div v-if="!smallScreen" class="map-panel-wrapper">
-        <TheMap></TheMap>
-        <!-- Commented code below is for a custom panel that operates similar to q-drawer -->
-
-        <!-- <transition name="slide">
-          <Panel v-if="ms.rightPanelVis"></Panel>
-        </transition> -->
-      </div>
-      <div class="q-ma-lg" v-else style="height: 65% !important">
-        <TheLeftPanel></TheLeftPanel>
-      </div>
-    </template>
-  </q-splitter>
+  <div class="q-pa-sm" style="border-radius: 15px !important">
+    <TheHeader class="q-mb-sm"></TheHeader>
+    <q-splitter
+      v-model="ms.splitterModel"
+      :style="
+        !smallScreen
+          ? 'height: calc(100vh - 74px)'
+          : 'height: calc(100vh - 66px); width: 100%; position: absolute'
+      "
+      :disable="smallScreen"
+      :horizontal="smallScreen"
+      separator-style="background-color: transparent"
+      :limits="[0, 100]"
+    >
+      <template v-slot:before>
+        <div v-if="ms.leftPanelVis">
+          <div v-if="!smallScreen">
+            <TheLeftPanel></TheLeftPanel>
+          </div>
+          <div v-else>
+            <TheMap></TheMap>
+          </div>
+        </div>
+        <div v-else></div>
+      </template>
+      <template v-slot:after>
+        <div v-if="!smallScreen" class="after-wrapper">
+          <div class="map-panel-wrapper">
+            <TheMap></TheMap>
+          </div>
+          <div class="panel-container">
+            <transition name="slide">
+              <Panel v-if="ms.rightPanelVis"></Panel>
+            </transition>
+          </div>
+        </div>
+        <div class="q-ma-lg" v-else style="height: 65% !important">
+          <TheLeftPanel></TheLeftPanel>
+        </div>
+      </template>
+    </q-splitter>
+  </div>
 </template>
 
 <script setup>
@@ -81,16 +90,31 @@ let smallScreen = computed(() => $q.screen.lt.sm);
 .slide-leave-to {
   transform: translateX(100%);
 }
-.map-panel-wrapper {
-  display: grid;
+.after-wrapper {
+  display: flex;
   height: 100%;
   width: 100%;
+  gap: 0;
+}
+
+.map-panel-wrapper {
+  flex: 1;
+  height: 100%;
   position: relative;
+  display: grid;
 }
 .map-panel-wrapper > * {
   height: 100%;
+  overflow: hidden;
 }
-.map-panel-wrapper > TheMap {
-  flex: 1;
+
+.panel-container {
+  height: 100%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+:deep(.q-splitter__after) {
+  overflow: hidden;
 }
 </style>
