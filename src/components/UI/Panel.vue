@@ -31,6 +31,7 @@
           square
           unelevated
           style="position: absolute; bottom: 10px; width: 100%"
+          @click="ms.printMap = !ms.printMap"
         />
       </div>
     </q-scroll-area>
@@ -38,7 +39,7 @@
 </template>
 
 <script setup>
-import { useMapStore } from '../../store/index';
+import { useMapStore } from "../../store/index";
 
 const ms = useMapStore();
 </script>

@@ -70,12 +70,15 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
-import Portal from '@arcgis/core/portal/Portal';
-import PortalBasemapsSource from '@arcgis/core/widgets/BasemapGallery/support/PortalBasemapsSource';
-import Legend from './UI/Legend.vue';
-import { useMapStore } from '../store/index';
+import { ref, watch } from "vue";
+import Portal from "@arcgis/core/portal/Portal";
+import PortalBasemapsSource from "@arcgis/core/widgets/BasemapGallery/support/PortalBasemapsSource";
+import Legend from "./UI/Legend.vue";
+import { useMapStore } from "../store/index";
 const ms = useMapStore();
+
+let mapEl = null;
+let view = null;
 
 const showLegend = ref(true);
 
@@ -85,35 +88,69 @@ const toggleLegend = () => {
 
 // basemap gallery
 const allowedBasemapTitles = [
-  'TNC Light with Hillshade',
-  'TNC Dark Gray Map',
-  'Ocean Basemap',
-  'Imagery Hybrid',
+  "TNC Light with Hillshade",
+  "TNC Dark Gray Map",
+  "Ocean Basemap",
+  "Imagery Hybrid",
 ];
 const portal = new Portal();
 const source = new PortalBasemapsSource({
   portal,
   query: {
-    id: 'defa1b2287604d069c70af515331e30f',
+    id: "defa1b2287604d069c70af515331e30f",
   },
   filterFunction: (basemap) =>
     allowedBasemapTitles.indexOf(basemap.portalItem.title) > -1,
 });
+
 const handlePanelVis = () => {
   ms.leftPanelVis = !ms.leftPanelVis;
-  ms.leftPanelVis ? (ms.splitterModel = 25) : (ms.splitterModel = 0);
-  let newWidthEl = document.getElementsByClassName('q-splitter__before');
+  ms.leftPanelVis ? (ms.splitterModel = 30) : (ms.splitterModel = 0);
+  let newWidthEl = document.getElementsByClassName("q-splitter__before");
 
   if (!ms.leftPanelVis) {
     console.log(newWidthEl[0]);
-    newWidthEl[0].style.width = '0%';
+    newWidthEl[0].style.width = "0%";
   }
 };
 
+function getMapPrint() {
+  view.takeScreenshot().then((screenshot) => {
+    let image = screenshot.dataUrl;
+    ms.mapScreenshot = image;
+
+    ms.generatePdf();
+    ms.printMap = false;
+  });
+}
+
+// watch for a new shapefile upload
+watch(
+  () => ms.zipInput,
+  (newVal) => {
+    if (!mapEl) return;
+
+    if (newVal) {
+      ms.loadShapefile(newVal, mapEl, view);
+    } else {
+      ms.removeShapefile(mapEl);
+    }
+  },
+);
+
+watch(
+  () => ms.printMap,
+  () => {
+    if (ms.printMap) {
+      getMapPrint();
+    }
+  },
+);
+
 // arcgisViewReadyChange
 const onReady = (event) => {
-  const webMap = document.querySelector('arcgis-map').view.map;
-  const mapView = document.querySelector('arcgis-map').view;
+  view = document.querySelector("arcgis-map").view;
+  mapEl = view.map;
 };
 </script>
 

@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import { markRaw, watch } from 'vue';
-import Slider from '@arcgis/core/widgets/Slider';
-import { useMapStore } from '../../store';
+import { markRaw, watch } from "vue";
+import Slider from "@arcgis/core/widgets/Slider";
+import { useMapStore } from "../../store";
 
 export default {
   data() {
@@ -18,30 +18,12 @@ export default {
       sliderDisable: null,
     };
   },
-  props: ['method', 'option'],
-  emits: ['update-slider'],
-  // computed: {
-  //   compKey: {
-  //     get() {
-  //       const ms = useMapStore();
-  //       return ms.componentKey;
-  //     },
-  //     set(value) {
-  //       const ms = useMapStore();
-  //       ms.componentKey = value;
-  //     },
-  //   },
-  // },
-  // watch: {
-  //   compKey() {
-  //     this.option.checkboxModel.value = false;
-  //     this.slider.values = [this.option.min, this.option.max];
-  //   },
-  // },
+  props: ["method", "option"],
+  emits: ["update-slider"],
   mounted() {
     this.slider = markRaw(
       new Slider({
-        container: this.$refs['sliderDiv-' + this.option.field],
+        container: this.$refs["sliderDiv-" + this.option.field],
         id: this.option.field,
         min: this.option.min,
         max: this.option.max,
@@ -54,35 +36,22 @@ export default {
         draggableSegmentsEnabled: true,
         disabled: false,
         thumbCreatedFunction: (index, value, thumbElement) => {
-          const label = document.createElement('span');
-          label.className = 'slider-thumb-label';
+          const label = document.createElement("span");
+          label.className = "slider-thumb-label";
           label.textContent = Math.round(value);
           thumbElement.appendChild(label);
         },
       }),
     );
-    this.slider.on('thumb-drag', () => {
+    this.slider.on("thumb-drag", () => {
       let val = this.slider.values;
       const thumbEl = this.slider.container.querySelector(
-        '.esri-slider__thumb',
+        ".esri-slider__thumb",
       );
-      const labelEl = thumbEl?.querySelector('.slider-thumb-label');
+      const labelEl = thumbEl?.querySelector(".slider-thumb-label");
       if (labelEl) labelEl.textContent = Math.round(val[0]);
-      this.$emit('update-slider', this.option, val);
+      this.$emit("update-slider", this.option, val);
     });
-
-    // watch(
-    //   () => this.option.checkboxModel.value,
-    //   (newVal) => {
-    //     if (newVal == true) {
-    //       this.slider.values = [this.option.min, this.option.max];
-    //       this.$emit('update-slider', this.option, [
-    //         this.option.min,
-    //         this.option.max,
-    //       ]);
-    //     }
-    //   },
-    // );
   },
 };
 </script>

@@ -44,21 +44,24 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useQuasar } from 'quasar';
-import { useMapStore } from './store/index';
-import '@arcgis/map-components/components/arcgis-map';
-import '@arcgis/map-components/components/arcgis-legend';
-import '@arcgis/map-components/components/arcgis-scale-bar';
-import '@arcgis/map-components/components/arcgis-zoom';
-import '@arcgis/map-components/components/arcgis-expand';
-import '@arcgis/map-components/components/arcgis-basemap-toggle';
-import '@arcgis/map-components/components/arcgis-basemap-gallery';
-import '@arcgis/map-components/components/arcgis-home';
-import TheHeader from './components/TheHeader.vue';
-import TheMap from './components/TheMap.vue';
-import TheLeftPanel from './components/TheLeftPanel.vue';
-import Panel from './components/UI/Panel.vue';
+import { computed } from "vue";
+import { useQuasar } from "quasar";
+import { useMapStore } from "./store/index";
+import "@arcgis/map-components/components/arcgis-map";
+import "@arcgis/map-components/components/arcgis-legend";
+import "@arcgis/map-components/components/arcgis-scale-bar";
+import "@arcgis/map-components/components/arcgis-zoom";
+import "@arcgis/map-components/components/arcgis-expand";
+import "@arcgis/map-components/components/arcgis-basemap-toggle";
+import "@arcgis/map-components/components/arcgis-basemap-gallery";
+import "@arcgis/map-components/components/arcgis-home";
+import FeatureLayer from "@arcgis/core/layers/FeatureLayer.js";
+import request from "@arcgis/core/request.js";
+
+import TheHeader from "./components/TheHeader.vue";
+import TheMap from "./components/TheMap.vue";
+import TheLeftPanel from "./components/TheLeftPanel.vue";
+import Panel from "./components/UI/Panel.vue";
 
 const ms = useMapStore();
 const $q = useQuasar();
