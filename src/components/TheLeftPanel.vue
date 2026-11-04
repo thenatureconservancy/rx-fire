@@ -96,7 +96,7 @@
                   <div v-for="subFactor in factor.factors" :key="subFactor">
                     <div class="row q-ml-md q-my-md">
                       <div class="col-5" style="display: flex">
-                        <FactorCheckbox />
+                        <FactorCheckbox v-model="subFactor.checked" />
                         <div class="col-6 q-ml-md">
                           {{ subFactor.label }}
                         </div>
@@ -214,7 +214,7 @@
         label="Predict"
         icon="query_stats"
         style="flex: 1"
-        @click="ms.rightPanelVis = !ms.rightPanelVis"
+        @click="ms.rightPanelVis = true"
       />
       <q-btn
         square
@@ -223,7 +223,7 @@
         label="Reset"
         icon="refresh"
         style="flex: 1"
-        @click="ms.rightPanelVis = !ms.rightPanelVis"
+        @click="resetFactors()"
       />
     </div>
   </div>
@@ -239,7 +239,7 @@ import FactorCheckbox from "./UI/FactorCheckbox.vue";
 
 const ms = useMapStore();
 
-function updateModelProp(option) {
+function updateModelProp(option, val) {
   // const factor = ms.filterFactors.find((f) =>
   //   f.factors.some((subFactor) => subFactor.field === option.field)
   // );
@@ -254,7 +254,30 @@ function updateModelProp(option) {
   //     subFactor.step = option.step;
   //   }
   // }
-  console.log(option);
+  // console.log(option.value);
+}
+
+function resetFactors() {
+  ms.rightPanelVis = false;
+  ms.resetSlider = !ms.resetSlider;
+
+  ms.filterFactors.forEach((top) => {
+    if (top.type == "landscape") {
+      top.factors.forEach((factor) => {
+        factor.checked = false;
+      });
+    } else if (top.type == "operational") {
+      top.factors.forEach((factor) => {
+        factor.value = 0;
+      });
+    }
+  });
+
+  ms.burnBound = true;
+  ms.predClass = false;
+  ms.pClosed = false;
+  ms.pOpen = false;
+  ms.pEarlySeral = false;
 }
 </script>
 

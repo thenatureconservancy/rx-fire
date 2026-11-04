@@ -9,7 +9,7 @@
 <script>
 import { markRaw, watch } from "vue";
 import Slider from "@arcgis/core/widgets/Slider";
-import { useMapStore } from "../../store";
+import { useMapStore } from "../../store/index";
 
 export default {
   data() {
@@ -20,6 +20,34 @@ export default {
   },
   props: ["method", "option"],
   emits: ["update-slider"],
+  computed: {
+    resetSlider: {
+      get() {
+        const store = useMapStore();
+        return store.resetSlider;
+      },
+      set(value) {
+        const store = useMapStore();
+        store.resetSlider = value;
+      },
+    },
+  },
+  watch: {
+    resetSlider() {
+      if (this.slider) {
+        this.slider.values = [0];
+
+        const thumbEl = this.slider.container.querySelector(
+          ".esri-slider__thumb",
+        );
+        const labelEl = thumbEl?.querySelector(".slider-thumb-label");
+
+        if (labelEl) {
+          labelEl.textContent = "0";
+        }
+      }
+    },
+  },
   mounted() {
     this.slider = markRaw(
       new Slider({
@@ -51,6 +79,8 @@ export default {
       const labelEl = thumbEl?.querySelector(".slider-thumb-label");
       if (labelEl) labelEl.textContent = Math.round(val[0]);
       this.$emit("update-slider", this.option, val);
+
+      // console.log(val);
     });
   },
 };

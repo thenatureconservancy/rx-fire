@@ -32,6 +32,7 @@ export const useMapStore = defineStore("mapStore", {
     fileName: "Upload Shapefile",
     printMap: false,
     mapScreenshot: null,
+    resetSlider: false,
 
     // FILTER
     filterFactors: [
@@ -41,21 +42,15 @@ export const useMapStore = defineStore("mapStore", {
         factors: [
           {
             label: "Heat load index",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
           {
             label: "Slope angle, aspect",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
           {
             label: "Terrain position",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
         ],
       },
@@ -65,27 +60,19 @@ export const useMapStore = defineStore("mapStore", {
         factors: [
           {
             label: "Canopy closure",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
           {
             label: "Stand density",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
           {
             label: "Fuel model",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
           {
             label: "Ericaceous understory",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
         ],
       },
@@ -95,9 +82,7 @@ export const useMapStore = defineStore("mapStore", {
         factors: [
           {
             label: "30-year Climate Normals",
-            min: 0,
-            max: 100,
-            value: 0,
+            checked: false,
           },
         ],
       },

@@ -8,9 +8,5 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useMapStore } from "../../store/index";
-const ms = useMapStore();
-
-const model = ref(false);
+const model = defineModel();
 </script>
