@@ -203,6 +203,7 @@
         display: flex;
         gap: 8px;
         padding: 16px 8px 0px 0px;
+        margin-right: 8px;
         flex-shrink: 0;
       "
     >

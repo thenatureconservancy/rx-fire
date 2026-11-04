@@ -88,8 +88,8 @@ const toggleLegend = () => {
 
 // basemap gallery
 const allowedBasemapTitles = [
-  "TNC Light with Hillshade",
   "TNC Dark Gray Map",
+  "TNC Light with Hillshade",
   "Ocean Basemap",
   "Imagery Hybrid",
 ];
