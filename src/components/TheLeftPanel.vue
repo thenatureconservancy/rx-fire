@@ -88,6 +88,7 @@
             <div v-for="factor in ms.filterFactors" :key="factor">
               <div v-if="factor.type == 'landscape'">
                 <q-expansion-item
+                  v-model="factor.expanded"
                   class="q-mt-sm"
                   dense
                   :label="factor.label"
@@ -135,6 +136,7 @@
             <div v-for="factor in ms.filterFactors" :key="factor">
               <div v-if="factor.type == 'operational'">
                 <q-expansion-item
+                  v-model="factor.expanded"
                   class="q-mt-sm"
                   dense
                   :label="factor.label"
@@ -230,7 +232,7 @@
 </template>
 
 <script setup>
-import { watch } from "vue";
+import { watch, ref } from "vue";
 import { useMapStore } from "../store/index";
 import IconButton from "./UI/IconButton.vue";
 import Tooltip from "./UI/Tooltip.vue";
@@ -258,9 +260,18 @@ function updateModelProp(option, val) {
 }
 
 function resetFactors() {
-  ms.rightPanelVis = false;
+  let webmap = document.querySelector("arcgis-map").view.map;
   ms.resetSlider = !ms.resetSlider;
+  ms.rightPanelVis = false;
 
+  // reset layers
+  ms.burnBound = true;
+  ms.predClass = false;
+  ms.pClosed = false;
+  ms.pOpen = false;
+  ms.pEarlySeral = false;
+
+  // reset factors
   ms.filterFactors.forEach((top) => {
     if (top.type == "landscape") {
       top.factors.forEach((factor) => {
@@ -271,13 +282,16 @@ function resetFactors() {
         factor.value = 0;
       });
     }
+    top.expanded = false;
   });
 
-  ms.burnBound = true;
-  ms.predClass = false;
-  ms.pClosed = false;
-  ms.pOpen = false;
-  ms.pEarlySeral = false;
+  // remove user-uploaded shapefile layer, if present
+  if (ms.shapefileLayer) {
+    webmap.remove(ms.shapefileLayer);
+  }
+  ms.shapefileLayer = null;
+  ms.zipInput = null;
+  ms.fileName = "Upload Shapefile";
 }
 </script>
 

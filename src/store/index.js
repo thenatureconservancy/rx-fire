@@ -33,6 +33,7 @@ export const useMapStore = defineStore("mapStore", {
     printMap: false,
     mapScreenshot: null,
     resetSlider: false,
+    factorExpansions: null,
 
     // FILTER
     filterFactors: [
@@ -53,6 +54,7 @@ export const useMapStore = defineStore("mapStore", {
             checked: false,
           },
         ],
+        expanded: false,
       },
       {
         label: "Forest Structure",
@@ -75,6 +77,7 @@ export const useMapStore = defineStore("mapStore", {
             checked: false,
           },
         ],
+        expanded: false,
       },
       {
         label: "Long-term Climatic Conditions",
@@ -85,6 +88,7 @@ export const useMapStore = defineStore("mapStore", {
             checked: false,
           },
         ],
+        expanded: false,
       },
       {
         label: "Day-of-burn Weather",
@@ -115,6 +119,7 @@ export const useMapStore = defineStore("mapStore", {
             value: 0,
           },
         ],
+        expanded: false,
       },
       {
         label: "Ignition",
@@ -139,6 +144,7 @@ export const useMapStore = defineStore("mapStore", {
             value: 0,
           },
         ],
+        expanded: false,
       },
       {
         label: "Operational Resources",
@@ -157,6 +163,7 @@ export const useMapStore = defineStore("mapStore", {
             value: 0,
           },
         ],
+        expanded: false,
       },
     ],
   }),
@@ -232,9 +239,6 @@ export const useMapStore = defineStore("mapStore", {
         type: fieldTypeMap[f.type] ?? f.type,
       }));
 
-      // Resolve the spatial reference. The generate endpoint does not always
-      // echo it back on the feature set, so fall back to the layer's extent
-      // and finally to the view's spatial reference (we sent it as targetSR).
       const spatialReference =
         fcLayer.featureSet.spatialReference ??
         layerDef.extent?.spatialReference ??
@@ -243,9 +247,6 @@ export const useMapStore = defineStore("mapStore", {
       const geometryType =
         geometryTypeMap[layerDef.geometryType] ?? layerDef.geometryType;
 
-      // Stamp the spatial reference and geometry type onto each feature so
-      // ArcGIS can autocast the geometries and compute the layer's full
-      // extent instead of defaulting to WGS84.
       const features = fcLayer.featureSet.features.map((feat) => ({
         ...feat,
         geometry: feat.geometry
@@ -253,12 +254,9 @@ export const useMapStore = defineStore("mapStore", {
           : feat.geometry,
       }));
 
-      // Determine the object id field. Prefer the one already typed "oid";
-      // otherwise fall back to the layer definition's objectIdField.
       let objectIdField =
         fields.find((f) => f.type === "oid")?.name ?? layerDef.objectIdField;
 
-      // Ensure exactly one field is typed "oid" and matches objectIdField.
       if (objectIdField) {
         const oidField = fields.find((f) => f.name === objectIdField);
         if (oidField) oidField.type = "oid";
@@ -271,15 +269,13 @@ export const useMapStore = defineStore("mapStore", {
         geometryType,
         spatialReference,
         title: file.name.replace(".zip", ""),
+        opacity: 0.5,
       });
 
       // Remove any previously loaded shapefile before adding the new one.
       this.removeShapefile(map);
 
       map.add(layer);
-      // Store the raw layer (not a reactive proxy) so map.remove() can match
-      // it by identity later. A proxied layer would never === the instance
-      // held in map.layers, so removal would silently fail.
       this.shapefileLayer = markRaw(layer);
 
       await layer.when();
